@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--园loading
+    circle_color 颜色
+    circle_radius 半径
+    circle_centerX circle_centerY 中心点坐标
+    circle_duration 动画时长
+    -->
+    <declare-styleable name="CircleLoading">
+        <attr name="circle_color" format="color"></attr>
+        <attr name="circle_radius" format="float"></attr>
+        <attr name="circle_centerX" format="float"></attr>
+        <attr name="circle_centerY" format="float"></attr>
+        <attr name="circle_duration" format="integer"></attr>
+    </declare-styleable>
+
+
+</resources>
