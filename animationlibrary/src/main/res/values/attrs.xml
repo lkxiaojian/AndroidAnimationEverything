@@ -12,6 +12,7 @@
         <attr name="circle_centerX" format="float"></attr>
         <attr name="circle_centerY" format="float"></attr>
         <attr name="circle_duration" format="integer"></attr>
+        <attr name="circle_p_with" format="float"></attr>
     </declare-styleable>
 
 

@@ -25,37 +25,38 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
     private var mLength = 0f
 
     //圆环颜色
-    private var mCircleColor: Int = R.color.purple_700
-
+    private var mCircleColor: Int
     //圆环半径
-    private var mRadius: Float = 0f
-
+    private var mRadius: Float
     //圆环 中心点的坐标
-    private var centerX = 0f
-    private var centerY = 0f
-
+    private var centerX: Float
+    private var centerY: Float
     //动画时长
-    private var duration = 2000L
+    private var duration: Long
+    private var paintWith: Float
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleLoading)
-        mRadius=typedArray.getFloat(R.styleable.CircleLoading_circle_radius,50f)
-        centerX=typedArray.getFloat(R.styleable.CircleLoading_circle_centerX,540f)
-        centerY=typedArray.getFloat(R.styleable.CircleLoading_circle_centerY,960f)
-        duration=typedArray.getInt(R.styleable.CircleLoading_circle_duration,2000).toLong()
-        mCircleColor=typedArray.getColor(R.styleable.CircleLoading_circle_color,R.color.purple_700)
+        mRadius = typedArray.getFloat(R.styleable.CircleLoading_circle_radius, 50f)
+        centerX = typedArray.getFloat(R.styleable.CircleLoading_circle_centerX, 540f)
+        centerY = typedArray.getFloat(R.styleable.CircleLoading_circle_centerY, 960f)
+        duration = typedArray.getInt(R.styleable.CircleLoading_circle_duration, 2000).toLong()
+        paintWith = typedArray.getFloat(R.styleable.CircleLoading_circle_p_with, 10f)
+        mCircleColor =
+            typedArray.getColor(R.styleable.CircleLoading_circle_color, R.color.purple_700)
         getInstance(context)
         initP()
     }
+
     private fun initP() {
-        mPath= Path()
-        dest= Path()
-        mPathMeasure=PathMeasure(mPath, false)
-        mPaint= Paint(Paint.ANTI_ALIAS_FLAG)
+        mPath = Path()
+        dest = Path()
+        mPathMeasure = PathMeasure(mPath, false)
+        mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         mPaint.style = Paint.Style.STROKE
         mPaint.color = mCircleColor
-        mPaint.isAntiAlias = true
-        mPaint.strokeWidth = 10f
+        mPaint.isAntiAlias = true //抗锯齿
+        mPaint.strokeWidth = paintWith//画笔的宽度
         mPath.addCircle(centerX, centerY, mRadius, Path.Direction.CW)
         mPathMeasure.setPath(mPath, true)
         mLength = mPathMeasure.length
@@ -133,7 +134,7 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
      * TODO 每次设置属性 需要调用，不然无效
      * 不建议使用java 代码设置  需要更改默认属性 可以在xml 中进行设置
      */
-    fun build(){
+    fun build() {
         initP()
         postInvalidate()
     }
