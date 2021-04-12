@@ -1,2 +1,3 @@
+include ':animationlibrary'
 include ':app'
 rootProject.name = "AnimationEverything"

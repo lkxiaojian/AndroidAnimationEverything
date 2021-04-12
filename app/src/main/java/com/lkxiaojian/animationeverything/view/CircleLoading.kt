@@ -1,4 +1,4 @@
-package com.example.animationeverything.view
+package com.lkxiaojian.animationeverything.view
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -9,7 +9,7 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.util.AttributeSet
 import android.view.View
-import com.example.animationeverything.R
+import com.lkxiaojian.animationeverything.R
 import kotlin.math.abs
 
 @SuppressLint("ResourceAsColor")
@@ -19,8 +19,8 @@ class CircleLoading(context: Context?, attrs: AttributeSet?) : View(context, att
 
     private var mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var mPathMeasure: PathMeasure = PathMeasure(mPath, false)
-    private var mCircleColor: Int = R.color.black
-    private var radius: Float = 80f
+    private var mCircleColor: Int = R.color.purple_700
+    private var radius: Float = 50f
     private var mValueAnimator: ValueAnimator? = null
     private var mAnimatorValue = 0f
     private var mLength=0f
@@ -38,7 +38,6 @@ class CircleLoading(context: Context?, attrs: AttributeSet?) : View(context, att
         mPath.addCircle(300f, 300f, radius, Path.Direction.CW)
         mPathMeasure.setPath(mPath, true)
         mLength=mPathMeasure.length
-//        dest= Path()
         mValueAnimator = ValueAnimator.ofFloat(0f, 1f)
         mValueAnimator?.addUpdateListener {
             try {
@@ -66,7 +65,10 @@ class CircleLoading(context: Context?, attrs: AttributeSet?) : View(context, att
     }
 
     /**
-     * color 设置圆环的颜色
+     * TODO  color 设置圆环的颜色
+     *
+     * @param color
+     * @return CircleLoading
      */
     fun setCircleColor(color: Int): CircleLoading {
         this.mCircleColor = mCircleColor

@@ -1,4 +1,4 @@
-package com.example.animationeverything
+package com.lkxiaojian.animationeverything
 
 import org.junit.Test
 

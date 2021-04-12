@@ -1,4 +1,4 @@
-package com.example.animationeverything
+package com.lkxiaojian.animationeverything
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
