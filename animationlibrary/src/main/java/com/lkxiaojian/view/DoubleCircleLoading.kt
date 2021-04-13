@@ -103,11 +103,8 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         mValueAnimator?.duration = duration //动画时长
         mValueAnimator?.repeatMode = ObjectAnimator.RESTART
         mValueAnimator?.start()
-
     }
-
     private var flag = true
-
     @SuppressLint("DrawAllocation")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas?) {

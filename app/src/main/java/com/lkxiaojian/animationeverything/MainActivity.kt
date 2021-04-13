@@ -13,11 +13,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        val list= arrayListOf<String>()
+        val list = arrayListOf<String>()
         list.add("circleLoading")
         list.add("DoubleCircleLoading")
+        list.add("PrinterTextView")
         val viewAdapter = ViewAdapter(list)
-        rview.adapter=viewAdapter
-        rview.layoutManager=LinearLayoutManager(this)
+        rview.adapter = viewAdapter
+        rview.layoutManager = LinearLayoutManager(this)
     }
 }
