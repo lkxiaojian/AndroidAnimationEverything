@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lkxiaojian.view.DoubleCircleLoading
+        android:id="@+id/cll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       />
+
+<!--    app:circle_centerX="540"-->
+<!--    app:circle_centerY="960"-->
+<!--    app:circle_color="@color/purple_700"-->
+<!--    app:circle_duration="2000"-->
+<!--    app:circle_radius="50"-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

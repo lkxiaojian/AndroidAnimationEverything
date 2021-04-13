@@ -10,6 +10,7 @@ import kotlin.math.roundToInt
  * author: lk
  * description： UIUtils
  */
+@Suppress("DEPRECATION")
 class AnimationLibUtils private constructor(context: Context) {
     val horizontalScaleValue: Float
         get() = displayMetricsWidth / STANDARD_WIDTH

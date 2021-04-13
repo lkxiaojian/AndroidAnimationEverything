@@ -1,24 +1,30 @@
 package com.lkxiaojian.view
 
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.PathMeasure
+import android.graphics.*
+import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import com.lkxiaojian.Utlis.AnimationLibUtils.Companion.getInstance
+import androidx.annotation.RequiresApi
+import com.lkxiaojian.Utlis.AnimationLibUtils
 import com.lkxiaojian.animationlibrary.R
-import kotlin.math.abs
 
 
-@SuppressLint("ResourceAsColor")
-class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attrs) {
+/**
+ *create_time : 21-4-12 下午3:42
+ *author: lk
+ *description： DoubleCircleLoading
+ */
+@SuppressLint("ResourceAsColor", "Recycle")
+class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private lateinit var mPath: Path // 圆环的path
     private lateinit var dest: Path //动画的path
     private lateinit var mPaint: Paint //画笔
+    private lateinit var mAniPaint: Paint //画笔
     private lateinit var mPathMeasure: PathMeasure
     private var mValueAnimator: ValueAnimator? = null
     private var mAnimatorValue = 0f
@@ -27,6 +33,8 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
     //圆环颜色
     private var mCircleColor: Int
 
+    //转动的圆环颜色
+    private var mCircleAniColor: Int
     //圆环半径
     private var mRadius: Float
 
@@ -37,20 +45,32 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
     //动画时长
     private var duration: Long
     private var paintWith: Float
+    private var oval: RectF? = null
 
     init {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleLoading)
-        mRadius = typedArray.getFloat(R.styleable.CircleLoading_circle_radius, 50f)
-        centerX = typedArray.getFloat(R.styleable.CircleLoading_circle_centerX, 540f)
-        centerY = typedArray.getFloat(R.styleable.CircleLoading_circle_centerY, 960f)
-        duration = typedArray.getInt(R.styleable.CircleLoading_circle_duration, 2000).toLong()
-        paintWith = typedArray.getFloat(R.styleable.CircleLoading_circle_p_with, 10f)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DoubleCircleLoading)
+        mRadius = typedArray.getFloat(R.styleable.DoubleCircleLoading_circle_d_radius, 50f)
+        centerX = typedArray.getFloat(R.styleable.DoubleCircleLoading_circle_d_centerX, 540f)
+        centerY = typedArray.getFloat(R.styleable.DoubleCircleLoading_circle_d_centerY, 960f)
+        duration =
+            typedArray.getInt(R.styleable.DoubleCircleLoading_circle_d_duration, 2000).toLong()
+        paintWith = typedArray.getFloat(R.styleable.DoubleCircleLoading_circle_d_p_with, 10f)
         mCircleColor =
-            typedArray.getColor(R.styleable.CircleLoading_circle_color, R.color.purple_700)
-        getInstance(context)
+            typedArray.getColor(
+                R.styleable.DoubleCircleLoading_circle_d_color,
+                R.color.color_969696
+            )
+        mCircleAniColor =
+            typedArray.getColor(
+                R.styleable.DoubleCircleLoading_circle_ani_color,
+                R.color.purple_700
+            )
+        AnimationLibUtils.getInstance(context)
+        oval = RectF(centerX - mRadius, centerY - mRadius, centerX + mRadius, centerY + mRadius)
         initP()
     }
 
+    @SuppressLint("ObjectAnimatorBinding")
     private fun initP() {
         mPath = Path()
         dest = Path()
@@ -61,8 +81,15 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
         mPaint.isAntiAlias = true //抗锯齿
         mPaint.strokeWidth = paintWith//画笔的宽度
         mPath.addCircle(centerX, centerY, mRadius, Path.Direction.CW)//画圆环
+
+        mAniPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        mAniPaint.style = Paint.Style.STROKE
+        mAniPaint.color = mCircleAniColor
+        mAniPaint.isAntiAlias = true //抗锯齿
+        mAniPaint.strokeWidth = paintWith//画笔的宽度
         mPathMeasure.setPath(mPath, true)
         mLength = mPathMeasure.length
+
         mValueAnimator = ValueAnimator.ofFloat(0f, 1f)
         mValueAnimator?.addUpdateListener {
             try {
@@ -74,21 +101,33 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
         }
         mValueAnimator?.repeatCount = ValueAnimator.INFINITE    //无限循环
         mValueAnimator?.duration = duration //动画时长
+        mValueAnimator?.repeatMode = ObjectAnimator.RESTART
         mValueAnimator?.start()
+
     }
 
+    private var flag = true
+
+    @SuppressLint("DrawAllocation")
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        canvas?.drawPath(mPath, mPaint)
         dest.reset()
-        val distance = mLength * mAnimatorValue
-        val start =
-            (distance - (0.5 - abs(mAnimatorValue - 0.5)) * mLength).toFloat()
-        //截取一段距离 start 起始位置 distance重点位置 将截取的path  放到dest
-        // startWithMoveTo 起点位置是否要改变 true 截取的path 起点位置不回改变，截取的path 也不会改变 false 截取的path 可能变形
-        mPathMeasure.getSegment(start, distance, dest, true)
-
-        canvas?.drawPath(dest, mPaint)
+        val startAngle = mAnimatorValue * 270
+        val sweepAngle = startAngle + 90
+        dest.addArc(oval!!, startAngle, sweepAngle)
+        if (mAnimatorValue == 1f) {
+            //重置换画笔
+            flag = !flag
+        }
+        if (flag) {
+            canvas?.drawPath(dest, mAniPaint)
+        } else {
+            canvas?.drawPath(dest, mPaint)
+        }
     }
+
 
     /**
      * TODO  color 设置圆环的颜色
@@ -96,10 +135,22 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
      * @param color
      * @return CircleLoading
      */
-    fun setCircleColor(color: Int): CircleLoading {
+    fun setCircleColor(color: Int): DoubleCircleLoading {
         this.mCircleColor = color
         return this
     }
+
+    /**
+     * TODO  color 设置圆环动画的颜色
+     *
+     * @param color
+     * @return CircleLoading
+     */
+    fun setCircleAniColor(color: Int): DoubleCircleLoading {
+        this.mCircleAniColor = color
+        return this
+    }
+
 
     /**
      * TODO 设置圆环的半径
@@ -107,7 +158,7 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
      * @param radius  半径的长度
      * @return CircleLoading
      */
-    fun setRadius(radius: Float): CircleLoading {
+    fun setRadius(radius: Float): DoubleCircleLoading {
         this.mRadius = radius
         return this
     }
@@ -119,7 +170,7 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
      * @param y y坐标
      * @return
      */
-    fun setCenterPoint(x: Float, y: Float): CircleLoading {
+    fun setCenterPoint(x: Float, y: Float): DoubleCircleLoading {
         this.centerX = x
         this.centerY = y
         return this
@@ -131,7 +182,7 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
      * @param l
      * @return
      */
-    fun setDuration(l: Long): CircleLoading {
+    fun setDuration(l: Long): DoubleCircleLoading {
         this.duration = l
         return this
     }
@@ -158,9 +209,9 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
      * TODO 停止的动画重新开始，如果未调用 setStop（）方法 ，则不需要调用此方法（因为动画的start 默认已经开启）
      *
      */
-    fun start(){
+    fun start() {
         visibility = VISIBLE
         mValueAnimator?.start()
-
     }
+
 }

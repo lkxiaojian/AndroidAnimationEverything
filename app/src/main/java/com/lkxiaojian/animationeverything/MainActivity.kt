@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         val list= arrayListOf<String>()
         list.add("circleLoading")
+        list.add("DoubleCircleLoading")
         val viewAdapter = ViewAdapter(list)
         rview.adapter=viewAdapter
         rview.layoutManager=LinearLayoutManager(this)

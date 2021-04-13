@@ -10,7 +10,8 @@ class ViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val type = intent.getStringExtra("type")
         when (type) {
-            "circleLoading" ->layout=R.layout.circleloading
+            "circleLoading" -> layout = R.layout.circleloading
+            "DoubleCircleLoading" -> layout = R.layout.double_circle_loading
         }
         setContentView(layout)
     }

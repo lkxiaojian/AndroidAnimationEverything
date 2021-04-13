@@ -14,6 +14,21 @@
         <attr name="circle_duration" format="integer"></attr>
         <attr name="circle_p_with" format="float"></attr>
     </declare-styleable>
+    <!--双圆环Loading
+    circle_color 颜色
+    circle_radius 半径
+    circle_centerX circle_centerY 中心点坐标
+    circle_duration 动画时长
+    -->
+    <declare-styleable name="DoubleCircleLoading">
+        <attr name="circle_d_color" format="color"></attr>
+        <attr name="circle_ani_color" format="color"></attr>
+        <attr name="circle_d_radius" format="float"></attr>
+        <attr name="circle_d_centerX" format="float"></attr>
+        <attr name="circle_d_centerY" format="float"></attr>
+        <attr name="circle_d_duration" format="integer"></attr>
+        <attr name="circle_d_p_with" format="float"></attr>
+    </declare-styleable>
 
 
 </resources>
