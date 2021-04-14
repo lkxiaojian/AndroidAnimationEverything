@@ -29,7 +29,6 @@ class ViewActivity : AppCompatActivity() {
         prtv.setDuration(2000).setShowMessage("只让值动画是没什么意义的")
             .setAnimationCompleteListener(object : AnimationCompleteListener {
                 override fun animationComplete() {
-                    Log.e(tag,"animationComplete")
                 }
             }).build()
     }

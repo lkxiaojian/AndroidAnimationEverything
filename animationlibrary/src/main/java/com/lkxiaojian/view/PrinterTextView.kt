@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.TextView
 import com.lkxiaojian.interf.AnimationCompleteListener
 import com.lkxiaojian.Utlis.AnimationLibUtils
@@ -66,7 +67,7 @@ class PrinterTextView(context: Context, attrs: AttributeSet?) : TextView(context
             stringBuffer.append(datas!![mAnimatorValue])
             text = stringBuffer.toString()
             currentIndex = mAnimatorValue
-            if (currentIndex == datas!!.size) {
+            if (currentIndex == datas!!.size-1) {
                 mListener?.animationComplete()
             }
         }
