@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.annotation.RequiresApi
@@ -19,16 +18,13 @@ import com.lkxiaojian.animationlibrary.R
  *author: lk
  *description： DoubleCircleLoading
  */
-@SuppressLint("ResourceAsColor", "Recycle")
+@SuppressLint("ResourceAsColor")
 class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private lateinit var mPath: Path // 圆环的path
-    private lateinit var dest: Path //动画的path
     private lateinit var mPaint: Paint //画笔
     private lateinit var mAniPaint: Paint //画笔
-    private lateinit var mPathMeasure: PathMeasure
     private var mValueAnimator: ValueAnimator? = null
     private var mAnimatorValue = 0f
-    private var mLength = 0f
 
     //圆环颜色
     private var mCircleColor: Int
@@ -72,11 +68,8 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         initP()
     }
 
-    @SuppressLint("ObjectAnimatorBinding")
     private fun initP() {
         mPath = Path()
-        dest = Path()
-        mPathMeasure = PathMeasure(mPath, false)
         mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         mPaint.style = Paint.Style.STROKE
         mPaint.color = mCircleColor
@@ -89,8 +82,6 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         mAniPaint.color = mCircleAniColor
         mAniPaint.isAntiAlias = true //抗锯齿
         mAniPaint.strokeWidth = paintWith//画笔的宽度
-        mPathMeasure.setPath(mPath, true)
-        mLength = mPathMeasure.length
 
         mValueAnimator = ValueAnimator.ofFloat(0f, 360f)
         mValueAnimator?.addUpdateListener {

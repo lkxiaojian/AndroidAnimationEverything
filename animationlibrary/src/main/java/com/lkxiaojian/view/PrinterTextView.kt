@@ -75,7 +75,6 @@ class PrinterTextView(context: Context, attrs: AttributeSet?) : TextView(context
 
     /**
      * TODO 设置动画时长 1000 =1s
-     *
      * @param d
      * @return
      */

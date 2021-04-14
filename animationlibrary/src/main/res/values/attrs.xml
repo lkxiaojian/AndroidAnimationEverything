@@ -30,8 +30,14 @@
         <attr name="circle_d_p_with" format="float" />
     </declare-styleable>
 
+    <!--
+    PrinterTextView 打印字体
+     printer_duration 动画时长
+     printer_show_message 要打印的字体
+    -->
+
     <declare-styleable name="PrinterTextView">
-    <attr name="printer_duration" format="integer"></attr>
-    <attr name="printer_show_message" format="string"></attr>
+        <attr name="printer_duration" format="integer"></attr>
+        <attr name="printer_show_message" format="string"></attr>
     </declare-styleable>
 </resources>
