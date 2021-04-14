@@ -1,6 +1,5 @@
 package com.lkxiaojian.view
 
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +8,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.annotation.RequiresApi
 import com.lkxiaojian.Utlis.AnimationLibUtils
 import com.lkxiaojian.animationlibrary.R
@@ -35,6 +35,7 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
 
     //转动的圆环颜色
     private var mCircleAniColor: Int
+
     //圆环半径
     private var mRadius: Float
 
@@ -67,6 +68,7 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
             )
         AnimationLibUtils.getInstance(context)
         oval = RectF(centerX - mRadius, centerY - mRadius, centerX + mRadius, centerY + mRadius)
+
         initP()
     }
 
@@ -90,7 +92,7 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         mPathMeasure.setPath(mPath, true)
         mLength = mPathMeasure.length
 
-        mValueAnimator = ValueAnimator.ofFloat(0f, 1f)
+        mValueAnimator = ValueAnimator.ofFloat(0f, 360f)
         mValueAnimator?.addUpdateListener {
             try {
                 mAnimatorValue = it.animatedValue as Float
@@ -101,28 +103,18 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         }
         mValueAnimator?.repeatCount = ValueAnimator.INFINITE    //无限循环
         mValueAnimator?.duration = duration //动画时长
-        mValueAnimator?.repeatMode = ObjectAnimator.RESTART
+        mValueAnimator?.interpolator = LinearInterpolator()
         mValueAnimator?.start()
     }
+
     private var flag = true
+
     @SuppressLint("DrawAllocation")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.drawPath(mPath, mPaint)
-        dest.reset()
-        val startAngle = mAnimatorValue * 270
-        val sweepAngle = startAngle + 90
-        dest.addArc(oval!!, startAngle, sweepAngle)
-        if (mAnimatorValue == 1f) {
-            //重置换画笔
-            flag = !flag
-        }
-        if (flag) {
-            canvas?.drawPath(dest, mAniPaint)
-        } else {
-            canvas?.drawPath(dest, mPaint)
-        }
+        canvas?.drawArc(oval!!, mAnimatorValue , 90f, false, mPaint)
     }
 
 

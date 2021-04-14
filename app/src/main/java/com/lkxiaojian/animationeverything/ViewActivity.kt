@@ -15,10 +15,13 @@ class ViewActivity : AppCompatActivity() {
         when (type) {
             "circleLoading" -> layout = R.layout.circleloading
             "DoubleCircleLoading" -> layout = R.layout.double_circle_loading
-            "PrinterTextView" -> layout = R.layout.printer_textview
+            "PrinterTextView" -> {
+                layout = R.layout.printer_textview
+
+            }
         }
         setContentView(layout)
-        setPrinterTextView()
+//        setPrinterTextView()
     }
 
     /**
