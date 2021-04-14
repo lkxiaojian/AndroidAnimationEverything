@@ -14,7 +14,7 @@ import com.lkxiaojian.animationlibrary.R
 /**
  *create_time : 21-4-13 下午5:00
  *author: lk
- *description： PrinterTextView
+ *description： PrinterTextView 打印字体
  */
 @SuppressLint("AppCompatCustomView")
 class PrinterTextView(context: Context, attrs: AttributeSet?) : TextView(context, attrs) {

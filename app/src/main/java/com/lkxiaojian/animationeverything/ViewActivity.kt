@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.printer_textview.*
 
 class ViewActivity : AppCompatActivity() {
     private var layout: Int = 0
-    private val tag=ViewActivity::class.java.name
+    private val tag = ViewActivity::class.java.name
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val type = intent.getStringExtra("type")
@@ -17,11 +17,25 @@ class ViewActivity : AppCompatActivity() {
             "DoubleCircleLoading" -> layout = R.layout.double_circle_loading
             "PrinterTextView" -> {
                 layout = R.layout.printer_textview
-
             }
         }
         setContentView(layout)
-//        setPrinterTextView()
+        setJavaSetting(type)
+    }
+
+    private fun setJavaSetting(type: String?) {
+        when (type) {
+            "circleLoading" -> {
+
+            }
+            "DoubleCircleLoading" -> {
+
+            }
+            "PrinterTextView" -> {
+                setPrinterTextView()
+            }
+        }
+
     }
 
     /**
