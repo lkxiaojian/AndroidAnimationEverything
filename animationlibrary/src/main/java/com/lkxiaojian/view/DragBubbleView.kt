@@ -36,8 +36,8 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
     private var lastDistance = 0.0
     private var ballRadiusS: Float
     private var ballRadiusF: Float
-    private var mBezierPath:Path?=null
-    private val SCBL=0.6f
+    private var mBezierPath: Path? = null
+    private val SCBL = 0.6f
 
     init {
         val obtainStyledAttributes =
@@ -58,7 +58,7 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
             obtainStyledAttributes.getFloat(R.styleable.DragBubbleView_dbv_ball_centerY, 1100f)
         ballRadiusS = ballRadius
         ballRadiusF = ballRadius
-        length=ballRadiusS*8
+        length = ballRadiusS * 8
         initP()
     }
 
@@ -68,7 +68,7 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
         mPaintBall.color = ballColor
         mPaintBall.style = Paint.Style.FILL
 
-        mBezierPath= Path()
+        mBezierPath = Path()
 
         mPaintNum = Paint()
         mPaintNum.color = numColor
@@ -135,7 +135,7 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
             val by = (centerY - cosA * ballRadiusF).toFloat()
 
             //C
-            val cx = (centerXEvent -sinA * ballRadiusS).toFloat()
+            val cx = (centerXEvent - sinA * ballRadiusS).toFloat()
             val cy = (centerYEvent + cosA * ballRadiusS).toFloat()
 
             //D
@@ -143,8 +143,8 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
             val dy = (centerYEvent - cosA * ballRadiusS).toFloat()
 
             //E 控制点
-            val ex = (centerX+centerXEvent) / 2
-            val ey = (centerY+centerY) / 2
+            val ex = (centerX + centerXEvent) / 2
+            val ey = (centerY + centerY) / 2
             mBezierPath?.reset()
             mBezierPath?.moveTo(cx, cy)
             mBezierPath?.quadTo(ex, ey, ax, ay)
@@ -157,19 +157,8 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
         }
         //3.分离状态， 一个小球家消息数据
         if (BALL_STATE == 2 && BALL_LINK_STATE == 2) {
-//            val rectF = RectF(
-//                centerXEvent - ballRadius,
-//                centerYEvent - ballRadius,
-//                centerXEvent + ballRadius,
-//                centerYEvent + ballRadius
-//            )
-//            val fontMetrics: Paint.FontMetrics = mPaintNum.fontMetrics
-//            val distance = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom
-//            val baseline = rectF.centerY() + distance
-//            canvas.drawText(showNum, rectF.centerX(), baseline, mPaintNum)
-//            canvas.drawCircle(centerXEvent, centerYEvent, ballRadius, mPaintBall)
-        }
 
+        }
 
         //4.消息状态，爆炸效果
     }
@@ -238,21 +227,4 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
 
         return true
     }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        initCentur(w,h)
-    }
-
-    private fun initCentur(w: Int, h: Int) {
-        val i = (w / 2).toFloat()
-        val j = (h / 2).toFloat()
-        centerX=i
-        centerXEvent=i
-        centerY=j
-        centerYEvent=j
-
-    }
-
-
 }

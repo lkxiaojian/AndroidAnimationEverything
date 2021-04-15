@@ -36,7 +36,7 @@ class ViewActivity : AppCompatActivity() {
             }
             "DragBubbleView" -> {
                 bt_qq_view.setOnClickListener {
-                    dvqq.init()
+                    dvqq.Builder().build()
                 }
             }
         }
