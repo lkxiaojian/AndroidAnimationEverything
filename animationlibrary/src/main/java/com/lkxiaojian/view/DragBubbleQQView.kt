@@ -189,10 +189,9 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
         mBurstBitmapsArray = arrayOfNulls(mBurstDrawablesArray.size)
         for (i in mBurstDrawablesArray.indices) {
             //将气泡爆炸的drawable转为bitmap
-            val bitmap = BitmapFactory.decodeResource(getResources(), mBurstDrawablesArray[i])
+            val bitmap = BitmapFactory.decodeResource(resources, mBurstDrawablesArray[i])
             mBurstBitmapsArray[i] = bitmap
         }
-        Builder().build()
     }
 
 
@@ -220,7 +219,6 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         //1. 连接情况绘制贝塞尔曲线  2.绘制圆背景以及文本 3.另外端点绘制一个圆
         //1. 静止状态  2，连接状态 3，分离状态  4，消失
         if (mBubbleState == BUBBLE_STATE_CONNECT) {
@@ -250,7 +248,7 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
             //B
             val iBubMovableStartX = mBubMovableCenter!!.x + mBubMovableRadius * sinTheta
             val iBubMovableStartY = mBubMovableCenter!!.y - mBubMovableRadius * cosTheta
-            mBezierPath?.run {
+            mBezierPath.run {
                 reset()
                 moveTo(iBubFixedStartX, iBubFixedStartY)
                 quadTo(

@@ -67,50 +67,56 @@ class PrinterTextView(context: Context, attrs: AttributeSet?) : TextView(context
             stringBuffer.append(datas!![mAnimatorValue])
             text = stringBuffer.toString()
             currentIndex = mAnimatorValue
-            if (currentIndex == datas!!.size-1) {
+            if (currentIndex == datas!!.size - 1) {
                 mListener?.animationComplete()
             }
         }
     }
 
-    /**
-     * TODO 设置动画时长 1000 =1s
-     * @param d
-     * @return
-     */
-    fun setDuration(d: Long): PrinterTextView {
-        this.duration = d
-        return this
+    inner class Builder {
+        /**
+         * TODO 设置动画时长 1000 =1s
+         * @param d
+         * @return
+         */
+        fun setDuration(d: Long): Builder {
+            duration = d
+            return this
+        }
+
+        /**
+         * TODO 设置要显示的文字
+         *
+         * @param text
+         * @return
+         */
+        fun setShowMessage(text: String): Builder {
+            showText = text
+            datas = text.toList()
+            textCount = text.length
+            return this
+        }
+
+        /**
+         * TODO设置完成渲染后监听
+         *
+         * @param listener
+         * @return
+         */
+        fun setAnimationCompleteListener(listener: AnimationCompleteListener): Builder {
+            mListener = listener
+            return this
+        }
+
+        /**
+         * TODO 设置完成后要调用此方法 ，不然无效
+         */
+        fun build(): PrinterTextView {
+            initp()
+            return this@PrinterTextView
+        }
+
     }
 
-    /**
-     * TODO 设置要显示的文字
-     *
-     * @param text
-     * @return
-     */
-    fun setShowMessage(text: String): PrinterTextView {
-        this.showText = text
-        datas = text.toList()
-        textCount = text.length
-        return this
-    }
 
-    /**
-     * TODO设置完成渲染后监听
-     *
-     * @param listener
-     * @return
-     */
-    fun setAnimationCompleteListener(listener: AnimationCompleteListener): PrinterTextView {
-        this.mListener = listener
-        return this
-    }
-
-    /**
-     * TODO 设置完成后要调用此方法 ，不然无效
-     */
-    fun build() {
-        initp()
-    }
 }

@@ -98,100 +98,103 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         mValueAnimator?.start()
     }
 
-    private var flag = true
 
     @SuppressLint("DrawAllocation")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.drawPath(mPath, mPaint)
-        canvas?.drawArc(oval!!, mAnimatorValue , 90f, false, mPaint)
+        canvas?.drawArc(oval!!, mAnimatorValue, 90f, false, mPaint)
+    }
+
+    inner class Builder {
+        /**
+         * TODO  color 设置圆环的颜色
+         *
+         * @param color
+         * @return CircleLoading
+         */
+        fun setCircleColor(color: Int): Builder {
+            mCircleColor = color
+            return this
+        }
+
+        /**
+         * TODO  color 设置圆环动画的颜色
+         *
+         * @param color
+         * @return CircleLoading
+         */
+        fun setCircleAniColor(color: Int): Builder {
+            mCircleAniColor = color
+            return this
+        }
+
+
+        /**
+         * TODO 设置圆环的半径
+         *
+         * @param radius  半径的长度
+         * @return CircleLoading
+         */
+        fun setRadius(radius: Float): Builder {
+            mRadius = radius
+            return this
+        }
+
+        /**
+         * TODO 设置圆环的中心点 默认是屏幕的中心点
+         *
+         * @param x x坐标
+         * @param y y坐标
+         * @return
+         */
+        fun setCenterPoint(x: Float, y: Float): Builder {
+            centerX = x
+            centerY = y
+            return this
+        }
+
+        /**
+         * TODO 动画时长 默认 2秒
+         *
+         * @param l
+         * @return
+         */
+        fun setDuration(l: Long): Builder {
+            duration = l
+            return this
+        }
+
+        /**
+         * TODO 每次设置属性 需要调用，不然无效
+         * 不建议使用java 代码设置  需要更改默认属性 可以在xml 中进行设置
+         */
+        fun build():DoubleCircleLoading {
+            initP()
+            postInvalidate()
+            return this@DoubleCircleLoading
+        }
+
+
+        /**
+         *  停止 动画 并隐藏
+         */
+        fun setStop() {
+            mValueAnimator?.cancel()
+            visibility = GONE
+        }
+
+        /**
+         * TODO 停止的动画重新开始，如果未调用 setStop（）方法 ，则不需要调用此方法（因为动画的start 默认已经开启）
+         *
+         */
+        fun start() {
+            visibility = VISIBLE
+            mValueAnimator?.start()
+        }
     }
 
 
-    /**
-     * TODO  color 设置圆环的颜色
-     *
-     * @param color
-     * @return CircleLoading
-     */
-    fun setCircleColor(color: Int): DoubleCircleLoading {
-        this.mCircleColor = color
-        return this
-    }
-
-    /**
-     * TODO  color 设置圆环动画的颜色
-     *
-     * @param color
-     * @return CircleLoading
-     */
-    fun setCircleAniColor(color: Int): DoubleCircleLoading {
-        this.mCircleAniColor = color
-        return this
-    }
-
-
-    /**
-     * TODO 设置圆环的半径
-     *
-     * @param radius  半径的长度
-     * @return CircleLoading
-     */
-    fun setRadius(radius: Float): DoubleCircleLoading {
-        this.mRadius = radius
-        return this
-    }
-
-    /**
-     * TODO 设置圆环的中心点 默认是屏幕的中心点
-     *
-     * @param x x坐标
-     * @param y y坐标
-     * @return
-     */
-    fun setCenterPoint(x: Float, y: Float): DoubleCircleLoading {
-        this.centerX = x
-        this.centerY = y
-        return this
-    }
-
-    /**
-     * TODO 动画时长 默认 2秒
-     *
-     * @param l
-     * @return
-     */
-    fun setDuration(l: Long): DoubleCircleLoading {
-        this.duration = l
-        return this
-    }
-
-    /**
-     * TODO 每次设置属性 需要调用，不然无效
-     * 不建议使用java 代码设置  需要更改默认属性 可以在xml 中进行设置
-     */
-    fun build() {
-        initP()
-        postInvalidate()
-    }
-
-
-    /**
-     *  停止 动画 并隐藏
-     */
-    fun setStop() {
-        mValueAnimator?.cancel()
-        visibility = GONE
-    }
-
-    /**
-     * TODO 停止的动画重新开始，如果未调用 setStop（）方法 ，则不需要调用此方法（因为动画的start 默认已经开启）
-     *
-     */
-    fun start() {
-        visibility = VISIBLE
-        mValueAnimator?.start()
-    }
 
 }
