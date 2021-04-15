@@ -18,7 +18,7 @@ import com.lkxiaojian.animationlibrary.R
  *author: lk
  *description： DoubleCircleLoading
  */
-@SuppressLint("ResourceAsColor")
+@SuppressLint("ResourceAsColor", "Recycle")
 class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private lateinit var mPath: Path // 圆环的path
     private lateinit var mPaint: Paint //画笔

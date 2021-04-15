@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.lkxiaojian.interf.AnimationCompleteListener
+import kotlinx.android.synthetic.main.drag_bubble_view.*
 import kotlinx.android.synthetic.main.printer_textview.*
 
 class ViewActivity : AppCompatActivity() {
@@ -15,9 +16,8 @@ class ViewActivity : AppCompatActivity() {
         when (type) {
             "circleLoading" -> layout = R.layout.circleloading
             "DoubleCircleLoading" -> layout = R.layout.double_circle_loading
-            "PrinterTextView" -> {
-                layout = R.layout.printer_textview
-            }
+            "PrinterTextView" -> layout = R.layout.printer_textview
+            "DragBubbleView" -> layout = R.layout.drag_bubble_view
         }
         setContentView(layout)
         setJavaSetting(type)
@@ -33,6 +33,11 @@ class ViewActivity : AppCompatActivity() {
             }
             "PrinterTextView" -> {
                 setPrinterTextView()
+            }
+            "DragBubbleView" -> {
+                bt_qq_view.setOnClickListener {
+                    dvqq.init()
+                }
             }
         }
 

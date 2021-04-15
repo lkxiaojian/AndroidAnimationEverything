@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         list.add("circleLoading")
         list.add("DoubleCircleLoading")
         list.add("PrinterTextView")
+        list.add("DragBubbleView")
+
         val viewAdapter = ViewAdapter(list)
         rview.adapter = viewAdapter
         rview.layoutManager = LinearLayoutManager(this)

@@ -40,4 +40,32 @@
         <attr name="printer_duration" format="integer"></attr>
         <attr name="printer_show_message" format="string"></attr>
     </declare-styleable>
+
+    <!--
+    DragBubbleView 仿qq聊天界面提示
+    dbv_show_num 要显示的数字
+    dbv_ball_radius 小球的半径
+    dbv_ball_color 小球颜色
+    dbv_num_color 文字颜色
+    dbv_ball_centerX dbv_ball_centerY  初始中心点坐标
+    -->
+    <declare-styleable name="DragBubbleView">
+        <attr name="dbv_show_num" format="string"></attr>
+        <attr name="dbv_ball_radius" format="float"></attr>
+        <attr name="dbv_ball_color" format="color"></attr>
+        <attr name="dbv_num_color" format="color"></attr>
+
+        <attr name="dbv_ball_centerX" format="float"></attr>
+        <attr name="dbv_ball_centerY" format="float"></attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="DragBubbleQQView">
+        <attr name="bubble_radius" format="dimension"/>
+        <attr name="bubble_color" format="color"/>
+        <attr name="bubble_text" format="string"/>
+        <attr name="bubble_textSize" format="dimension"/>
+        <attr name="bubble_textColor" format="color"/>
+    </declare-styleable>
+
 </resources>
