@@ -94,7 +94,7 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
     /**
      * 气泡的画笔
      */
-    private  var mBubblePaint: Paint
+    private var mBubblePaint: Paint
 
     /**
      * 贝塞尔曲线path
@@ -136,7 +136,6 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
     private var mBurstBitmapsArray: Array<Bitmap?>
 
 
-
     /**
      * 当前气泡爆炸图片index
      */
@@ -157,7 +156,8 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
     init {
         val array: TypedArray =
             context.obtainStyledAttributes(attrs, R.styleable.DragBubbleQQView)
-        mBubbleRadius = array.getDimension(R.styleable.DragBubbleQQView_bubble_radius, mBubbleRadius)
+        mBubbleRadius =
+            array.getDimension(R.styleable.DragBubbleQQView_bubble_radius, mBubbleRadius)
         mBubbleColor = array.getColor(R.styleable.DragBubbleQQView_bubble_color, Color.RED)
         mTextStr = array.getString(R.styleable.DragBubbleQQView_bubble_text)
         mTextSize = array.getDimension(R.styleable.DragBubbleQQView_bubble_textSize, mTextSize)
@@ -192,7 +192,7 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
             val bitmap = BitmapFactory.decodeResource(getResources(), mBurstDrawablesArray[i])
             mBurstBitmapsArray[i] = bitmap
         }
-        init()
+        build()
     }
 
 
@@ -392,9 +392,64 @@ class DragBubbleQQView(context: Context, attrs: AttributeSet?) : View(context, a
         animator.start()
     }
 
-    fun init() {
+    fun build() {
         init(width, height)
         invalidate()
+    }
+
+    /**
+     * TODO 设置不动圆环半径
+     *
+     * @param radius
+     * @return
+     */
+    fun setBubbleRadius(radius: Float): DragBubbleQQView {
+        this.mBubbleRadius = radius
+        return this
+    }
+
+    /**
+     * TODO 设置文字内容
+     *
+     * @param text
+     * @return
+     */
+    fun setBubbleText(text: String): DragBubbleQQView {
+        this.mTextStr = text
+        return this
+    }
+
+    /**
+     * TODO 设置文字的大小
+     *
+     * @param size
+     * @return
+     */
+    fun setBubbleTextSize(size: Float): DragBubbleQQView {
+        this.mTextSize = size
+        return this
+    }
+
+    /**
+     * TODO 设置小球的颜色
+     *
+     * @param color
+     * @return
+     */
+    fun setBubbleColor(color: Int): DragBubbleQQView {
+        this.mBubbleColor = color
+        return this
+    }
+
+    /**
+     * TODO 设置文字的颜色
+     *
+     * @param color
+     * @return
+     */
+    fun setBubbleTextColor(color: Int): DragBubbleQQView {
+        this.mTextColor = color
+        return this
     }
 
 
