@@ -1,25 +1,19 @@
 package com.lkxiaojian.view.statistical
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.DashPathEffect
 import android.graphics.Paint
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.lkxiaojian.Utlis.AnimationLibUtils
 import com.lkxiaojian.Utlis.AnimationLibUtils.Companion.dp2px
 import com.lkxiaojian.animationlibrary.R
 import java.util.*
 import kotlin.collections.ArrayList
 
 class LBarChartView : FrameLayout {
-    private var defaultBorderColor = Color.argb(255, 217, 217, 217)
     private var titleTextColor = Color.argb(255, 0, 0, 0)
-    private var xLineColor = Color.argb(255, 219, 219, 219)
     private val blueProgressBarColor = Color.argb(255, 51, 136, 239)
     private val progressBarColor = Color.argb(255, 217, 217, 217)
     private var labelTextColor = 0
@@ -30,12 +24,11 @@ class LBarChartView : FrameLayout {
     private var mAvgTitle: String? = null
     private var mWidth = 0
     private var mHeight = 0
-    var mLeftTextSpace = 0
+    private var mLeftTextSpace = 0
     private var mBottomTextSpace = 0
     private var mTopTextSpace = 0
-    private var mBorderLinePaint: Paint? = null
-    private var maxData: Double=0.0
-    private var mDatas: List<Double>? = null
+    private var maxData: Double = 0.0
+    private var mDatas: ArrayList<Double>? = null
 
     /**
      * 备注文本画笔
@@ -55,6 +48,18 @@ class LBarChartView : FrameLayout {
     private var avgLeft = 70
     private var mShowNumber = 6
     private var perBarW = 0f
+
+    //右侧等级字体大小
+    private var leftLabelTextSize = 0f
+
+    //右侧等级字体颜色
+    private var leftLabelTextColor = 0
+
+    //底部滑动条是否显示
+    private var scrollLine = false
+
+    // 标题是否居中
+    private var titleCenter = false
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -78,12 +83,13 @@ class LBarChartView : FrameLayout {
         mHeight = measuredHeight
     }
 
-    @SuppressLint("CustomViewStyleable")
+    @SuppressLint("CustomViewStyleable", "ResourceAsColor")
     private fun init(context: Context, attrs: AttributeSet?) {
         mDatas = ArrayList()
         val t = context.obtainStyledAttributes(attrs, R.styleable.barCharts)
-        defaultBorderColor = t.getColor(R.styleable.barCharts_borderColor, defaultBorderColor)
-        titleTextColor = t.getColor(R.styleable.barCharts_titleTextColor, Color.GRAY)
+        titleTextColor = t.getColor(R.styleable.barCharts_titleTextColor, R.color.black)
+        leftLabelTextSize = t.getDimension(R.styleable.barCharts_leftLabelTextSize, 12f)
+        leftLabelTextColor = t.getColor(R.styleable.barCharts_leftLabelTextColor, R.color.black)
         mTitleTextSize =
             t.getDimension(R.styleable.barCharts_titleTextSize, mTitleTextSize.toFloat())
                 .toInt()
@@ -94,25 +100,22 @@ class LBarChartView : FrameLayout {
             t.getDimension(R.styleable.barCharts_avgTitleTextSize, avgTitleTextSize.toFloat())
                 .toInt()
         labelTextColor = t.getColor(R.styleable.barCharts_labelTextColor, Color.GRAY)
-        xLineColor = t.getColor(R.styleable.barCharts_xlineColor, xLineColor)
         mLeftTextSpace = t.getDimension(R.styleable.barCharts_leftTextSpace, 30f).toInt()
         mBottomTextSpace = t.getDimension(R.styleable.barCharts_bottomTextSpace, 20f).toInt()
         mTopTextSpace = t.getDimension(R.styleable.barCharts_topTextSpace, 50f).toInt()
         mTitle = t.getString(R.styleable.barCharts_title)
         mShowNumber = t.getInteger(R.styleable.barCharts_barShowNumber, 6)
+        scrollLine = t.getBoolean(R.styleable.barCharts_scrollLine, false)
+        titleCenter = t.getBoolean(R.styleable.barCharts_titleCenter, false)
         t.recycle()
-        val dp1 = dp2px(context, 1).toFloat()
-        mBorderLinePaint = createPaint(Paint.Style.FILL_AND_STROKE, defaultBorderColor, dp1, null)
-        mTextPaint =
-            createPaint(Paint.Style.FILL_AND_STROKE, labelTextColor, dp1, mLabelTextSize.toFloat())
 
+        mTextPaint =
+            createPaint(Paint.Style.FILL_AND_STROKE, leftLabelTextColor, 1f, leftLabelTextSize)
         mTitleTextPaint =
             createPaint(Paint.Style.FILL_AND_STROKE, titleTextColor, 3f, mTitleTextSize.toFloat())
-
         mAvgTextPaint =
             createPaint(Paint.Style.FILL_AND_STROKE, titleTextColor, 2f, avgTitleTextSize.toFloat())
         val dp4 = dp2px(context, 4).toFloat()
-
         progressBar = createPaint(Paint.Style.FILL_AND_STROKE, progressBarColor, dp4, null)
         progressBar?.strokeCap = Paint.Cap.ROUND
 
@@ -122,7 +125,6 @@ class LBarChartView : FrameLayout {
 
         dp24 = dp2px(context, 24)
         avgLeft = dp2px(context, 93)
-
         barChartView = BarChart(context, attrs)
         val parames = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         parames.setMargins(
@@ -164,13 +166,12 @@ class LBarChartView : FrameLayout {
             m.color = it
         }
         textSize?.let {
-            {
-                m.textSize = it
-            }
+
+            m.textSize = it
+
         }
         return m
     }
-
 
 
     private fun setMaxData() {
@@ -182,10 +183,16 @@ class LBarChartView : FrameLayout {
         super.dispatchDraw(canvas)
         perBarW = mWidth / mShowNumber.toFloat()
         if (mTitle != null) {
+
+            val x: Float = if (titleCenter) {
+                (width / 2).toFloat()
+            } else {
+                dp24 / 2 - 10.toFloat()
+            }
             canvas.drawText(
                 mTitle!!,
-                dp24 / 2 - 10.toFloat(),
-                mTopTextSpace - mTitleTextSize + mBottomTextSpace / 2 - mTitleTextSize + 10.toFloat(),
+                x,
+                (mTopTextSpace - mTitleTextSize / 2).toFloat(),
                 mTitleTextPaint!!
             )
         }
@@ -196,9 +203,7 @@ class LBarChartView : FrameLayout {
             )
         }
         canvas.translate(mLeftTextSpace.toFloat(), mHeight - mBottomTextSpace.toFloat())
-        mTextPaint!!.style = Paint.Style.FILL_AND_STROKE
         for (i in 0..5) {
-//            String v = String.valueOf(maxData / 5 * i);
             val v = "" + (maxData / 5 * i).toInt()
             val y = (-mHeight + mBottomTextSpace + mTopTextSpace) / 6 * i
             canvas.drawText(
@@ -206,68 +211,168 @@ class LBarChartView : FrameLayout {
                 y.toFloat(),
                 mTextPaint!!
             )
-            //            if (i != 0) {
-//                canvas.drawLine(0, -y, mWidth, -y, mXXPaint);
-//            }
         }
-        val withX = mWidth - mLeftTextSpace * 2
-        canvas.drawLine(0f, dp24.toFloat(), withX.toFloat(), dp24.toFloat(), progressBar!!)
-        if (mDatas!!.size <= mShowNumber) {
-            canvas.drawLine(
-                -10f,
-                dp24.toFloat(),
-                withX + 10.toFloat(),
-                dp24.toFloat(),
-                blueProgressBar!!
-            )
-        } else {
-            val i = (srcollBar / perBarW * 1.5).toInt() + mShowNumber
-            var stopX = withX * i / mDatas!!.size
-            if (stopX > withX) {
-                stopX = withX
+
+        if (scrollLine) {
+            val withX = mWidth - mLeftTextSpace * 2
+            val dp20 = dp2px(context, 28).toFloat()
+            canvas.drawLine(0f, dp20, withX.toFloat(), dp20, progressBar!!)
+            if (mDatas!!.size <= mShowNumber) {
+                canvas.drawLine(
+                    -5f,
+                    dp20,
+                    withX + 5.toFloat(),
+                    dp20,
+                    blueProgressBar!!
+                )
+            } else {
+                val i = (srcollBar / perBarW * 1.5).toInt() + mShowNumber
+                var stopX = withX * i / mDatas!!.size
+                if (stopX > withX) {
+                    stopX = withX
+                }
+                canvas.drawLine(
+                    -5f,
+                    dp20,
+                    stopX + 5.toFloat(),
+                    dp20,
+                    blueProgressBar!!
+                )
             }
-            canvas.drawLine(
-                -10f,
-                dp24.toFloat(),
-                stopX + 10.toFloat(),
-                dp24.toFloat(),
-                blueProgressBar!!
-            )
         }
     }
 
-    fun setScroBall(scroBall: Int) {
-        srcollBar = scroBall
-        postInvalidate()
-    }
+    inner class Builder {
+        private var mDesciption: ArrayList<String>? = null
+        private var avgData: Double = 0.0
+        private var isAnimation = true
 
-    fun setDatas(
-        mDatas: ArrayList<Double>,
-        mDesciption: ArrayList<String>,
-        avgData: Double,
-        title: String?,
-        isAnimation: Boolean
-    ) {
-        this.mDatas = mDatas
-        setMaxData()
-        mTitle = title
-        mAvgTitle = "平均分数:$avgData"
-        mShowNumber = if (mDatas.size < 6) {
-            mDatas.size
-        } else {
-            6
+        /**
+         * TODO  设置滑动的监听
+         *
+         * @param dragInerfaces
+         */
+        fun setDragInerfaces(dragInerfaces: DragInerfaces): Builder {
+            barChartView?.setDragInerfaces(dragInerfaces)
+            return this
         }
-        postInvalidate()
-        barChartView!!.setDatas(mDatas, mDesciption, avgData, isAnimation)
+
+        /**
+         * TODO 追加 显示的柱状图
+         *
+         * @param mDatas
+         * @param mDesciption
+         */
+        fun addEndMoreData(mDatas: ArrayList<Double>, mDesciption: ArrayList<String>): Builder {
+            barChartView?.addEndMoreData(mDatas, mDesciption)
+            return this
+        }
+
+        /**
+         * TODO  设置滑动条的滑动的距离
+         *
+         * @param scroBall
+         */
+        fun setScroBall(scroBall: Int): Builder {
+            srcollBar = scroBall
+            return  this
+        }
+
+        /**
+         * TODO 设置柱状图的 数字 和底部显示的内容
+         *
+         * @param dataS
+         * @param desciptionS
+         */
+        fun setDatas(
+            dataS: ArrayList<Double>,
+            desciptionS: ArrayList<String>
+        ): Builder {
+            mDatas = dataS
+            mDesciption = desciptionS
+            setMaxData()
+            return  this
+        }
+
+        /**
+         * TODO 设置标题
+         *
+         * @param title
+         */
+        fun setTitle(title: String): Builder {
+            mTitle = title
+            return  this
+        }
+
+        /**
+         * TODO 设置avg title
+         *
+         * @param title
+         */
+        fun setAvgTitle(title: String): Builder {
+            mAvgTitle = title
+            return  this
+        }
+
+        /**
+         * TODO 设置平均数
+         *
+         * @param avg
+         */
+        fun setAvgData(avg: Double): Builder {
+            avgData = avg
+            return  this
+        }
+
+        /**
+         * TODO 设置 是否显示动画
+         *
+         * @param f
+         */
+        fun setCanAnimation(f: Boolean): Builder {
+            isAnimation = f
+            return  this
+        }
+
+        /**
+         * TODO 设置每页显示的柱状图的数量
+         *
+         * @param num
+         */
+        fun setShowNumber(num:Int): Builder {
+            mShowNumber=num
+            return  this
+        }
+
+        fun build() {
+            if (mDatas != null && mDesciption != null) {
+                barChartView?.setDatas(mDatas!!, mDesciption!!, avgData, isAnimation)
+                postInvalidate()
+            }
+
+        }
     }
 
-    fun setDragInerfaces(dragInerfaces: DragInerfaces?) {
-        barChartView!!.setDragInerfaces(dragInerfaces)
-    }
 
-    fun addEndMoreData(mDatas: ArrayList<Double>, mDesciption: ArrayList<String>) {
-        barChartView!!.addEndMoreData(mDatas, mDesciption)
-    } //    public void addStartMoreData(List<Double> mDatas, List<String> mDesciption) {
-    //        barChartView.addStartMoreData(mDatas,mDesciption);
-    //    }
+//    fun setDatas(
+//        mDatas: ArrayList<Double>,
+//        mDesciption: ArrayList<String>,
+//        avgData: Double,
+//        title: String?,
+//        isAnimation: Boolean
+//    ) {
+//        this.mDatas = mDatas
+//        setMaxData()
+//        mTitle = title
+//        mAvgTitle = "平均分数:$avgData"
+//        mShowNumber = if (mDatas.size < 6) {
+//            mDatas.size
+//        } else {
+//            6
+//        }
+//        postInvalidate()
+//        barChartView!!.setDatas(mDatas, mDesciption, avgData, isAnimation)
+//    }
+
+
 }

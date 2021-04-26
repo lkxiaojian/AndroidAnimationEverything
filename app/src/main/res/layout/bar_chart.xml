@@ -13,7 +13,6 @@
         android:layout_width="350dp"
         android:layout_height="210dp"
         app:barShowNumber="6"
-        app:borderColor="@color/black"
         app:bottomTextSpace="20dp"
         app:dataTextColor="@color/black"
         app:dataTextSize="12sp"
@@ -21,12 +20,17 @@
         app:descriptionTextSize="20sp"
         app:isClickAnimation="true"
         app:labelTextColor="@color/black"
-        app:labelTextSize="11sp"
+        app:labelTextSize="12sp"
+        app:leftLabelTextSize="12sp"
+        app:leftLabelTextColor="@color/black"
         app:leftTextSpace="30dp"
         app:title="柱状图实例"
         app:titleTextColor="@color/black"
+        app:bottomLineColor="@color/black"
         app:titleTextSize="20sp"
-        app:topTextSpace="20dp"
+        app:topTextSpace="30dp"
+        app:scrollLine="true"
+        app:titleCenter="false"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

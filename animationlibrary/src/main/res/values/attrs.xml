@@ -61,37 +61,58 @@
 
 
     <declare-styleable name="DragBubbleQQView">
-        <attr name="bubble_radius" format="dimension"/>
-        <attr name="bubble_color" format="color"/>
-        <attr name="bubble_text" format="string"/>
-        <attr name="bubble_textSize" format="dimension"/>
-        <attr name="bubble_textColor" format="color"/>
+        <attr name="bubble_radius" format="dimension" />
+        <attr name="bubble_color" format="color" />
+        <attr name="bubble_text" format="string" />
+        <attr name="bubble_textSize" format="dimension" />
+        <attr name="bubble_textColor" format="color" />
     </declare-styleable>
 
+    <!--
+    lineColor 虚线的颜色
+    titleTextColor 标题的颜色
+    title 标题
+    titleTextSize 标题的大小
 
+    avgTitle 平均数显示的内容
+    avgTitleTextSize 平均数 字体的大小
+    avgTitleTextColor 平均数字体颜色
+    bottomLineColor 底部线的颜色
+    scrollLine 底部滑动条是否显示
+    titleCenter 标题是否居中显示
+
+    -->
     <declare-styleable name="barCharts">
-        <attr name="borderColor" format="color" />
         <attr name="lineColor" format="color" />
-        <attr name="xlineColor" format="color" />
         <attr name="titleTextColor" format="color" />
         <attr name="title" format="string" />
         <attr name="titleTextSize" format="dimension" />
 
+        <attr name="avgTitleTextSize" format="dimension" />
+        <attr name="avgTitleTextColor" format="color" />
+        <attr name="avgTitle" format="string" />
+
+        <attr name="bottomLineColor" format="color" />
+
+        <attr name="leftLabelTextSize" format="dimension" />
+        <attr name="leftLabelTextColor" format="color" />
+
+
         <attr name="labelTextSize" format="dimension" />
         <attr name="labelTextColor" format="color" />
-        <attr name="avgTitleTextSize" format="dimension" />
+
         <attr name="descriptionTextSize" format="dimension" />
         <attr name="descriptionTextColor" format="color" />
         <attr name="avgLineColor" format="color" />
         <attr name="dataTextSize" format="dimension" />
         <attr name="dataTextColor" format="color" />
-
         <attr name="leftTextSpace" format="dimension" />
         <attr name="topTextSpace" format="dimension" />
         <attr name="bottomTextSpace" format="dimension" />
         <attr name="barShowNumber" format="integer" />
         <attr name="isClickAnimation" format="boolean" />
-
+        <attr name="scrollLine" format="boolean" />
+        <attr name="titleCenter" format="boolean" />
     </declare-styleable>
 
 </resources>

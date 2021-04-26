@@ -47,15 +47,19 @@ class ViewActivity : AppCompatActivity() {
                 }
             }
             "BarChart" -> {
-                val dataS= arrayListOf<Double>()
+                val dataS = arrayListOf<Double>()
                 dataS.add(70.0)
                 dataS.add(80.0)
-                dataS.add(90.0)
-                val mDesciption= arrayListOf<String>()
+                dataS.add(100.0)
+                val mDesciption = arrayListOf<String>()
                 mDesciption.add("a")
                 mDesciption.add("b")
                 mDesciption.add("c")
-                lbv.setDatas(dataS,mDesciption,80.0,"123",true)
+                lbv.Builder()
+                    .setAvgData(80.0)
+                    .setAvgTitle("平均数：80")
+                    .setDatas(dataS, mDesciption)
+                    .setShowNumber(6).build()
             }
         }
 

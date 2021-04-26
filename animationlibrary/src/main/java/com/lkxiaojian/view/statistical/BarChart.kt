@@ -52,7 +52,7 @@ class BarChart(context: Context, attrs: AttributeSet?) : LBaseView (context,attr
     @SuppressLint("CustomViewStyleable", "ResourceAsColor")
     private fun init(context: Context, attrs: AttributeSet?) {
         val t = context.obtainStyledAttributes(attrs, R.styleable.barCharts)
-        defaultBorderColor = t.getColor(R.styleable.barCharts_borderColor, defaultBorderColor)
+        defaultBorderColor = t.getColor(R.styleable.barCharts_bottomLineColor, R.color.black)
         descriptionTextSize = t.getDimension(R.styleable.barCharts_labelTextSize, 20f).toInt()
         dataTextSize = t.getDimension(R.styleable.barCharts_dataTextSize, 20f).toInt()
         descriptionColor = t.getColor(R.styleable.barCharts_descriptionTextColor, Color.GRAY)
@@ -151,7 +151,7 @@ class BarChart(context: Context, attrs: AttributeSet?) : LBaseView (context,attr
             )
         }
         //绘制平均线
-        val avgHeight = (-lHeight / maxData!! * mAvgData!!).toFloat()
+        val avgHeight = (-lHeight / maxData * mAvgData).toFloat()
         canvas.drawLine(0f, avgHeight, mMaxScrollx + mWidth.toFloat(), avgHeight, mAVGPaint!!)
         canvas.drawLine(
             0f,
