@@ -54,6 +54,7 @@ class AnimationLibUtils private constructor(context: Context) {
         return (height.toFloat() * displayMetricsHeight / (STANDARD_HEIGHT - stateBarHeight)).roundToInt()
     }
 
+
     companion object {
         //标准值  正常情况下应该保存在配置文件中
          var STANDARD_WIDTH = 1080f
@@ -62,7 +63,7 @@ class AnimationLibUtils private constructor(context: Context) {
         var displayMetricsWidth = 0f
         var displayMetricsHeight = 0f
         var stateBarHeight = 0f
-        private var instance: AnimationLibUtils? = null
+        private  var instance: AnimationLibUtils?=null
         fun getInstance(context: Context): AnimationLibUtils? {
             if (instance == null) {
                 instance = AnimationLibUtils(context)
@@ -76,6 +77,11 @@ class AnimationLibUtils private constructor(context: Context) {
 //            }
 //            return instance
 //        }
+
+        fun dp2px(context: Context, dpValue: Int): Int {
+            return context.resources.displayMetrics.density.toInt() * dpValue
+        }
+
     }
 
     init {

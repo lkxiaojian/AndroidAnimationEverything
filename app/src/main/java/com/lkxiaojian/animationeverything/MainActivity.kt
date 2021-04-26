@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         list.add("DoubleCircleLoading")
         list.add("PrinterTextView")
         list.add("DragBubbleView")
+        list.add("BarChart")
 
         val viewAdapter = ViewAdapter(list)
         rview.adapter = viewAdapter
