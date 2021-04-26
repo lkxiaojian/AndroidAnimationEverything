@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.util.AttributeSet
 import android.view.View
+import com.lkxiaojian.Utlis.AniColor.color_3700B3
 import com.lkxiaojian.Utlis.AnimationLibUtils.Companion.getInstance
 import com.lkxiaojian.animationlibrary.R
 import kotlin.math.abs
@@ -46,7 +47,7 @@ class CircleLoading(context: Context, attrs: AttributeSet?) : View(context, attr
         duration = typedArray.getInt(R.styleable.CircleLoading_circle_duration, 2000).toLong()
         paintWith = typedArray.getFloat(R.styleable.CircleLoading_circle_p_with, 10f)
         mCircleColor =
-            typedArray.getColor(R.styleable.CircleLoading_circle_color, R.color.purple_700)
+            typedArray.getColor(R.styleable.CircleLoading_circle_color, color_3700B3)
         getInstance(context)
         initP()
     }

@@ -9,6 +9,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.annotation.RequiresApi
+import com.lkxiaojian.Utlis.AniColor.color_3700B3
+import com.lkxiaojian.Utlis.AniColor.color_9696
 import com.lkxiaojian.Utlis.AnimationLibUtils
 import com.lkxiaojian.animationlibrary.R
 
@@ -43,7 +45,6 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
     private var duration: Long
     private var paintWith: Float
     private var oval: RectF? = null
-
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DoubleCircleLoading)
         mRadius = typedArray.getFloat(R.styleable.DoubleCircleLoading_circle_d_radius, 50f)
@@ -55,12 +56,12 @@ class DoubleCircleLoading(context: Context, attrs: AttributeSet?) : View(context
         mCircleColor =
             typedArray.getColor(
                 R.styleable.DoubleCircleLoading_circle_d_color,
-                R.color.color_969696
+                color_9696
             )
         mCircleAniColor =
             typedArray.getColor(
                 R.styleable.DoubleCircleLoading_circle_ani_color,
-                R.color.purple_700
+                color_3700B3
             )
         AnimationLibUtils.getInstance(context)
         oval = RectF(centerX - mRadius, centerY - mRadius, centerX + mRadius, centerY + mRadius)

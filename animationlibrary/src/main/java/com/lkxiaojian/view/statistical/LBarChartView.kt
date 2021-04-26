@@ -61,6 +61,7 @@ class LBarChartView : FrameLayout {
     // 标题是否居中
     private var titleCenter = false
 
+
     constructor(context: Context) : super(context) {
         init(context, null)
     }
@@ -87,9 +88,9 @@ class LBarChartView : FrameLayout {
     private fun init(context: Context, attrs: AttributeSet?) {
         mDatas = ArrayList()
         val t = context.obtainStyledAttributes(attrs, R.styleable.barCharts)
-        titleTextColor = t.getColor(R.styleable.barCharts_titleTextColor, R.color.black)
+        titleTextColor = t.getColor(R.styleable.barCharts_titleTextColor, Color.BLACK)
         leftLabelTextSize = t.getDimension(R.styleable.barCharts_leftLabelTextSize, 12f)
-        leftLabelTextColor = t.getColor(R.styleable.barCharts_leftLabelTextColor, R.color.black)
+        leftLabelTextColor = t.getColor(R.styleable.barCharts_leftLabelTextColor, Color.BLACK)
         mTitleTextSize =
             t.getDimension(R.styleable.barCharts_titleTextSize, mTitleTextSize.toFloat())
                 .toInt()

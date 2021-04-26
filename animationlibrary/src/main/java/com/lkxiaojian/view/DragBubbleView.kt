@@ -47,9 +47,9 @@ class DragBubbleView(context: Context, attrs: AttributeSet?) : View(context, att
             showNum = showNumTmp
         }
         ballColor =
-            obtainStyledAttributes.getColor(R.styleable.DragBubbleView_dbv_ball_color, R.color.red)
+            obtainStyledAttributes.getColor(R.styleable.DragBubbleView_dbv_ball_color, Color.RED)
         numColor =
-            obtainStyledAttributes.getColor(R.styleable.DragBubbleView_dbv_num_color, R.color.white)
+            obtainStyledAttributes.getColor(R.styleable.DragBubbleView_dbv_num_color,Color.WHITE)
         ballRadius =
             obtainStyledAttributes.getFloat(R.styleable.DragBubbleView_dbv_ball_radius, 30f)
         centerX =
